@@ -22,7 +22,7 @@ docker service create \
   -ui-dir /ui
 ```
 
-3. Make sure you are in this project's root and upload `example.toml` to consul
+3. Ensure consul is up at http://localhost:8500, then make sure you are in this project's root and upload `example.toml` to consul
 
 ```
 export CDIR=`pwd`
@@ -36,7 +36,7 @@ docker run \
  --consul.prefix="traefik-stage"
  ```
 
-4. Start traefik docker service
+4. At this point the traefik config should be uploaded at: http://localhost:8500/ui/#/dc1/kv/traefik-stage/. Next Start traefik docker service
 
  ```
  docker service create \
@@ -67,5 +67,17 @@ docker service create \
 ```
 
 At this point the traefik logs will properly show it creating the frontend/backends and routes for the nginx1 service that was detected from docker
+
+```
+2017-06-15T18:00:37.559825827Z time="2017-06-15T18:00:37Z" level=debug msg="Configuration received from provider docker: {"backends":{"backend-nginx1":{"servers":{"server-nginx1-1":{"url":"http://10.0.4.7:80","weight":0}},"loadBalancer":{"method":"wrr"}}},"frontends":{"frontend-Host-mytest-mydomain1-com":{"entryPoints":["http"],"backend":"backend-nginx1","routes":{"route-frontend-Host-mytest-mydomain1-com":{"rule":"Host:mytest.mydomain1.com"}},"passHostHeader":true,"priority":0,"basicAuth":[]}}}"
+2017-06-15T18:00:37.559845503Z time="2017-06-15T18:00:37Z" level=debug msg="Last docker config received more than 2s, OK"
+2017-06-15T18:00:37.560149444Z time="2017-06-15T18:00:37Z" level=debug msg="Creating frontend frontend-Host-mytest-mydomain1-com"
+2017-06-15T18:00:37.560187299Z time="2017-06-15T18:00:37Z" level=debug msg="Wiring frontend frontend-Host-mytest-mydomain1-com to entryPoint http"
+2017-06-15T18:00:37.560207175Z time="2017-06-15T18:00:37Z" level=debug msg="Creating route route-frontend-Host-mytest-mydomain1-com Host:mytest.mydomain1.com"
+2017-06-15T18:00:37.560226652Z time="2017-06-15T18:00:37Z" level=debug msg="Creating backend backend-nginx1"
+2017-06-15T18:00:37.560460975Z time="2017-06-15T18:00:37Z" level=debug msg="Creating load-balancer wrr"
+2017-06-15T18:00:37.560497731Z time="2017-06-15T18:00:37Z" level=debug msg="Creating server server-nginx1-1 at http://10.0.4.7:80 with weight 0"
+2017-06-15T18:00:37.560517608Z time="2017-06-15T18:00:37Z" level=info msg="Server configuration reloaded on :80"
+```
 
 However if you go to the traefik dashboard at http://localhost:8080 nothing is displayed
