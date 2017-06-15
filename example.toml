@@ -1,0 +1,18 @@
+defaultEntryPoints = ["http"]
+
+debug=true
+logLevel="DEBUG"
+
+[web]
+address = ":8080"
+
+[web.statistics]
+
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+
+[docker]
+swarmmode=true
+domain="traefik"
+watch=true
